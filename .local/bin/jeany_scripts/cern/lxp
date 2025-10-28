@@ -1,0 +1,209 @@
+# CERN LXPlus (and similar nodes) ssh helper script, by Jean Yves Beaucamp - 2025.
+
+if [[ -v CERN_USERNAME ]]; then
+    user="$CERN_USERNAME"
+else
+    user="$USER"
+fi
+
+lxhost_arg=""
+
+do_atlasgw_proxy=false
+
+do_vnc_proxy=false
+vnc_port=5907
+
+do_kerb_only=false
+
+do_cm_start_only=false
+do_cm_exit_only=false
+
+#------------------------------------------
+# Parse cmd line arguments
+#------------------------------------------
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -u|--user)
+            user="$2"
+            shift 2
+            ;;
+        -p|--p1-proxy)
+            do_atlasgw_proxy=true
+            shift
+            ;;
+        -v|--vnc)
+            do_vnc_proxy=true
+            shift
+            ;;
+        --vnc=*)
+            do_vnc_proxy=true
+            offset="${1#--vnc=}"
+            vnc_port=$((5900 + $offset))
+            shift
+            ;;
+        -k|--kerb)
+            do_kerb_only=true
+            shift
+            ;;
+        -c|--cm)
+            do_cm_start_only=true
+            shift
+            ;;
+        -e|--cm-exit)
+            do_cm_exit_only=true
+            shift
+            ;;
+        -h|--help)
+            echo "Usage: lxp [-u|--user USER] [-p|--p1-proxy] [-v|--vnc[=OFFSET]] [-k|--kerb] [-c|--cm] [-e|--cm-exit] [lxhost]"
+            echo
+            echo "LXPlus ssh connection manager."
+            echo "A persistent background ControlMaster (CM) session will be initialized for each ssh target."
+            echo
+            echo "Options:"
+            echo "  -u, --user USER         Use the specified USER instead of \$CERN_USERNAME (or \$USER)."
+            echo "  -p, --p1-proxy          Pipe proxy to P1 (atlasgw.cern.ch) using port 3128."
+            echo "  -v, --vnc, --vnc=OFFSET Set VNC proxy on port 5900+OFFSET, using OFFSET=7 by default if not provided."
+            echo "  -k, --kerb              Open Kerberos token only using k5start, with the keytab located at \$HOME/.keytab."
+            echo "  -c, --cm                Open SSH ControlMaster background session only."
+            echo "  -e, --cm-exit           Exit SSH ControlMaster background session only."
+            echo "  -h, --help              Show this help message and exit."
+            echo
+            echo "The final argument is used to get the LXPlus host:"
+            echo " + '': lxplus"
+            echo " + '<NUM>': lxplus<NUM>"
+            echo " + 'abm<NUM>' | 'b<NUM>: lxplus8s0<NUM>"
+            echo " + 'lxtunnel' | 'tunnel' | 'lxt' | 't': lxtunnel"
+            echo
+            echo "Examples:"
+            echo "  lxp               → ssh -Y \$CERN_USERNAME@lxplus.cern.ch"
+            echo "  lxp abm9          → ssh -Y \$CERN_USERNAME@lxplus8s09.cern.ch"
+            echo "  lxp -u alice abm9 → ssh -Y alice@lxplus8s09.cern.ch"
+            exit 0
+            ;;
+        --) # stop parsing
+            shift
+            break
+            ;;
+        -*)
+            echo "lxp: unknown option: $1" >&2
+            exit 1
+            ;;
+        *)
+            if [[ -n "$lxhost_arg" ]]; then
+                echo "lxp: unknown argument: $1" >&2
+                exit 1
+            fi
+            lxhost_arg="$1"
+            shift
+            ;;
+    esac
+done
+
+# Check cmd line options
+if [[ -n "$lxhost_arg" && "$do_kerb_only" = true ]]; then
+    echo "lxp: cannot specify lxhost argument if using --kerb" >&2
+    exit 1
+fi
+
+if [[ ("$do_kerb_only" = true || "$do_cm_start_only" = true || "$do_cm_exit_only" = true) && ("$do_atlasgw_proxy" = true || "$do_vnc_proxy" = true) ]]; then
+    echo "lxp: cannot use both --kerb/--cm/--cm-exit and --p1-proxy/--vnc simultaneously" >&2
+    exit 1
+fi
+
+if [[ "$do_cm_start_only" = true && "$do_cm_exit_only" = true ]]; then
+    echo "lxp: cannot use both --cm and --cm-exit simultaneously" >&2
+    exit 1
+fi
+
+
+#------------------------------------------
+# Initialize kerberos token
+#------------------------------------------
+# Unless we're using --kerb, first check if we have a valid ticket already
+if [[ "$do_cm_exit_only" = false && ( "$do_kerb_only" = true || $(klist 2>/dev/null) != *"Default principal: $user@CERN.CH"* ) ]]; then
+    k5start_args=("-b" "-K" "10" "-l" "7d" "-r" "CERN.CH" "-u" "$user")
+    if [[ -e "$HOME/.keytab" ]]; then
+        k5start_args+=("-f" "$HOME/.keytab")
+    fi
+
+    echo "Initializing Kerberos token for: $user@CERN.CH"
+    k5start "${k5start_args[@]}"
+
+    if [[ "$do_kerb_only" = true ]]; then
+        exit 0
+    fi
+fi
+
+
+#------------------------------------------
+# Get target user/host
+#------------------------------------------
+if [[ -z "$lxhost_arg" ]]; then
+    lxhost="lxplus"
+elif [[ "$lxhost_arg" =~ ^abm([0-9]+)$ || "$lxhost_arg" =~ ^b([0-9]+)$ ]]; then
+    lxhost="lxplus8s0${match[1]}"
+elif [[ "$lxhost_arg" = "lxtunnel" || "$lxhost_arg" = "tunnel" || "$lxhost_arg" = "t" ]]; then
+    lxhost="lxtunnel"
+else
+    lxhost="lxplus$lxhost_arg"
+fi
+
+target="${user}@${lxhost}.cern.ch"
+
+
+#------------------------------------------
+# Get ControlMaster path
+#------------------------------------------
+if [[ "$(uname)" == "Linux" ]]; then
+    CM_PATH="/run/user/$(id -u)"
+elif [[ "$(uname)" == "Darwin" ]]; then
+    CM_PATH="$HOME/.ssh"
+fi
+
+
+#------------------------------------------
+# ControlMaster session exit
+#------------------------------------------
+# First check if the CM link exists
+if [[ "$do_cm_exit_only" = true ]]; then
+    if [[ -e "$CM_PATH/$target:22" ]]; then
+        ssh -O exit "$target"
+        exit 0
+    else
+        echo "lxp: no ssh ControlMaster session for $target" >&2
+        exit 1
+    fi
+fi
+
+
+#------------------------------------------
+# ControlMaster session initialization
+#------------------------------------------
+if [[ ! -e "$CM_PATH/$target:22" ]]; then
+    sshcm-otp "$target" "$(pass otp "cern-${user}")"
+
+    if [[ "$do_cm_start_only" = true ]]; then
+        exit 0
+    fi
+fi
+
+
+#------------------------------------------
+# Main ssh session
+#------------------------------------------
+args=()
+
+if [[ "$do_atlasgw_proxy" = true ]]; then
+    args+=("-L3128:atlasgw.cern.ch:3128")
+fi
+
+if [[ "$do_vnc_proxy" = true ]]; then
+    args+=("-L${vnc_port}:localhost:${vnc_port}")
+fi
+
+args+=("$target")
+
+# Initialize ssh connection
+ssh -Y "${args[@]}"
+
+exit 0

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Stops the docker container "cvmfs_docker"
+
+echo "Stopping Docker container 'cvmfs_docker'"
+
+docker stop "cvmfs_docker"
+docker rm "cvmfs_docker"
