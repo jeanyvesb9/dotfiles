@@ -45,7 +45,7 @@ fi
 
 # CERN LXPlus OS-specific paths
 if [[ "$__HOST_IS_CERN" = true ]]; then
-    source "$HOME/.dotfiles/dotfiles/cern/lxp_paths_setup.zsh"
+    source "$HOME/.config/dotfiles/cern/lxp_paths_setup.zsh"
 fi
 
 
@@ -301,16 +301,16 @@ export RUCIO_ACCOUNT=jbeaucam
 export EOS_MGM_URL=root://eosuser.cern.ch
 
 if [[ "$__HOST_IS_PRIV" = true ]]; then
-    source $HOME/.dotfiles/dotfiles/cern/local_setup.zsh
+    source $HOME/.config/dotfiles/cern/local_setup.zsh
 elif [[ "$__HOST_IS_CERN" = true ]]; then
-    source $HOME/.dotfiles/dotfiles/cern/lxp_setup.zsh
+    source $HOME/.config/dotfiles/cern/lxp_setup.zsh
 fi
 
 
 
 # IFLP -----------------------------------------------------------------------------
 if [[ "$__HOST_IS_PRIV" = true || "$__HOST_IS_OFFICE" = true ]]; then
-    source $HOME/.dotfiles/dotfiles/iflp/iflp_setup.zsh
+    source $HOME/.config/dotfiles/iflp/iflp_setup.zsh
 fi
 
 
