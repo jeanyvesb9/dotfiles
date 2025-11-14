@@ -282,6 +282,11 @@ array_contains () {
 
 
 
+# Git ------------------------------------------------------------------------------
+alias glp='git --no-pager log --pretty="format:%x09%<(11)%C(auto)%h %<(22)%aN %<(13)%ad %d %s" --date="format:%Y-%m-%d %H:%M"'
+
+
+
 # LaTeX ----------------------------------------------------------------------------
 if [[ "$__HOST_IS_CERN" = true ]]; then
     TEX_PATH='/cvmfs/sft.cern.ch/lcg/external/texlive/2025/bin/x86_64-linux'

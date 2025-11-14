@@ -141,7 +141,7 @@ fi
 if [[ -z "$lxhost_arg" ]]; then
     lxhost="lxplus"
 elif [[ "$lxhost_arg" =~ ^abm([0-9]+)$ || "$lxhost_arg" =~ ^b([0-9]+)$ ]]; then
-    lxhost="lxplus8s0${match[1]}"
+    lxhost="lxplus8s0${BASH_REMATCH[1]}"
 elif [[ "$lxhost_arg" = "lxtunnel" || "$lxhost_arg" = "tunnel" || "$lxhost_arg" = "t" ]]; then
     lxhost="lxtunnel"
 else

@@ -152,4 +152,4 @@ alias atlasgw='ssh atlasgw'
 
 # Git -------------------------------------------------------------------------
 alias gaiw='git atlas init-workdir ssh://git@gitlab.cern.ch:7999/jbeaucam/athena.git'
-alias glp='git log --pretty="format:%x09%<(11)%C(auto)%h %<(22)%aN %<(13)%ad %d %s" --date="format:%Y-%m-%d %H:%M"'
+
