@@ -65,6 +65,7 @@ syntax enable
 let g:rehash256 = 1
 
 colorscheme nord
+highlight Visual ctermfg=NONE
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Remap Keys
