@@ -48,6 +48,11 @@ if [[ "$__HOST_IS_CERN" = true ]]; then
     source "$HOME/.config/dotfiles/cern/lxp_paths_setup.zsh"
 fi
 
+# Private-specific paths
+if [[ "$__HOST_IS_CERN" = false ]]; then
+    source "$HOME/.config/dotfiles/local/local_setup.zsh"
+fi
+
 
 
 ### Global TMux session ### --------------------------------------------------------

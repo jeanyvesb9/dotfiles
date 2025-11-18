@@ -3,11 +3,7 @@
 export CERN_USERNAME="jbeaucam"
 
 # Add CERN-specific scripts
-export PATH="$HOME/.local/bin/jeany_scripts/cern:$PATH"
-
-# Initialize a kerberos session
-# This requires having the kstart package installed in both Linux and macOS (with homebrew)
-alias kerb="k5start -b -f $HOME/.keytab -K 10 -l 7d -r CERN.CH -u ${CERN_USERNAME}"
+export PATH="$HOME/.local/bin/cern_local:$PATH"
 
 # Get OTP passwords
 # This uses pass-otp (https://github.com/tadfisher/pass-otp)
@@ -19,8 +15,8 @@ alias otp-jbeaucam="pass otp cern-jbeaucam"
 alias otp-jyb="pass otp cern-jyb"
 
 alias lxtunnel="lxp lxtunnel"
-alias lxtunnelcm="lxpcm lxtunnel"
-alias lxtunnelcme="lxpcme lxtunnel"
+alias lxtunnelcm="lxp --cm lxtunnel"
+alias lxtunnelcme="lxpc --cm-exit lxtunnel"
 
 alias lxproxy="lxp -p"
 alias lxvnc="lxp -v"
