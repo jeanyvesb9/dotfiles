@@ -109,11 +109,6 @@ source $ZSH/oh-my-zsh.sh
 alias open='xdg-open'
 {{- end }}
 
-# Git alias for linux_config
-alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-# On first time, run:
-#   $ config config --local status.showUntrackedFiles no
-
 # vim
 if command -v nvim &> /dev/null; then
     alias vim='nvim'
