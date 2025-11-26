@@ -200,26 +200,12 @@ source $HOME/.local/share/dotfiles/iflp/iflp_setup.zsh
 
 ### CONDA/MAMBA ### ----------------------------------------------------------------
 {{- if .is_workstation }}
-# We need to safeguard the conda/mamba initialization on CERN hosts
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/jeany/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/jeany/mambaforge/etc/profile.d/conda.sh" ]; then
-        . "/home/jeany/mambaforge/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/jeany/mambaforge/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "/home/jeany/mambaforge/etc/profile.d/mamba.sh" ]; then
-    . "/home/jeany/mambaforge/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
+{{- if eq .chezmoi.os "darwin" }}
+{{ template "conda/macos" }}
+{{- else if eq .chezmoi.os "linux" }}
+{{ template "conda/linux" }}
+{{- end }}
 
 {{- end }}
 
