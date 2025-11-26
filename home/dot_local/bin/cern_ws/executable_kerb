@@ -68,7 +68,7 @@ fi
 
 
 has_previous_ticket=false
-# It can be "Default principal: " or "Principal: "
+# It can be "Default principal: " or "Principal: ", so we have to generalize it
 if [[ $(klist 2>/dev/null) = *"rincipal: $user@CERN.CH"* ]]; then
     has_previous_ticket=true
 fi
