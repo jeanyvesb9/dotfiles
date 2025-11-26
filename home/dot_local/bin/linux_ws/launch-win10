@@ -1,0 +1,13 @@
+#!/bin/sh
+
+vmName="win10"
+vmStatus=$(virsh --connect qemu:///system list --all | grep " $vmName " | awk '{ print $3}')
+
+if ([ -z "$vmStatus" ] || [ "$vmStatus" != "running" ] ); then
+    #echo "VM not running"
+    virsh --connect qemu:///system start "$vmName"
+fi
+
+# Wrapper to suppress all output (STDOUT, STDERR and bash)
+( looking-glass-client > /dev/null 2> /dev/null & )
+

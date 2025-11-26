@@ -1,0 +1,9 @@
+export RUCIO_ACCOUNT=jbeaucam
+export EOS_MGM_URL=root://eosuser.cern.ch
+
+{{ if eq .platform "cern" }}
+    {{- template "cern/lxp_setup.zsh" }}
+{{ else }}
+    {{- template "cern/ws_setup.zsh" }}
+{{- end }}
+

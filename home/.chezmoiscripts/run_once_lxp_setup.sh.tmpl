@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+{{- if eq .platform "cern" }}
+touch $HOME/.hostname_history
+{{- end }}

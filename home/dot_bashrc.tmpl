@@ -1,0 +1,20 @@
+{{- if eq .platform "cern" }}
+# Backup .bashrc for CERN hosts, in case zsh is not available
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+export PATH="$HOME/.local/bin:$PATH"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/.local/lib"
+
+# User specific aliases and functions
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# CERN specific:
+export RUCIO_ACCOUNT="jbeaucam"
+export EOS_MGM_URL=root://eosuser.cern.ch
+
+{{- end }}

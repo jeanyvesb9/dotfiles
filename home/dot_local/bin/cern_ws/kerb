@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+# CERN kerberos session initializer script, by Jean Yves Beaucamp - 2025.
+
+user=""
+
+renew_ticket=false
+destroy_ticket=false
+list_tickets=false
+
+#------------------------------------------
+# Parse cmd line arguments
+#------------------------------------------
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -r|--renew)
+            renew_ticket=true
+            shift
+            ;;
+        -d|--destroy)
+            destroy_ticket=true
+            shift
+            ;;
+        -l|--list)
+            list_tickets=true
+            shift
+            ;;
+        -h|--help)
+            echo "Usage: kerb [-r|--renew] [-d|--destroy] [-l|--list] [user]"
+            echo
+            echo "CERN Kerberos token initialization manager."
+            echo
+            echo "Options:"
+            echo "  user                    Use the specified USER instead of \$CERN_USERNAME (or \$USER)."
+            echo "  -r, --renew             Renew the ticket, even if a ticket for the same user already exists."
+            echo "  -d, --destroy           Destroy all existing tickets for the indicated user."
+            echo "  -l, --list              List all existing tickets."
+            echo "  -h, --help              Show this help message and exit."
+            exit 0
+            ;;
+        --) # stop parsing
+            shift
+            break
+            ;;
+        -*)
+            echo "lxp: unknown option: $1" >&2
+            exit 1
+            ;;
+        *)
+            if [[ -n "$user" ]]; then
+                echo "kerb: unknown argument: $1" >&2
+                exit 1
+            fi
+            user="$1"
+            shift
+            ;;
+    esac
+done
+
+
+# Use the default user if a username was not provided
+if [[ -z $user ]]; then
+    if [[ -v CERN_USERNAME ]]; then
+        user="$CERN_USERNAME"
+    else
+        user="$USER"
+    fi
+fi
+
+
+has_previous_ticket=false
+if [[ $(klist 2>/dev/null) = *"Default principal: $user@CERN.CH"* ]]; then
+    has_previous_ticket=true
+fi
+
+#------------------------------------------
+# Destroy previous kerberos token
+#------------------------------------------
+if [[ "$destroy_ticket" = true ]]; then
+    # First check if a ticket already exists for the same user
+    if [[ "$has_previous_ticket" = false ]]; then
+        echo "No existing kerberos token for: $user@CERN.CH"
+        exit 1
+    fi
+
+    kdestroy -p "$user@CERN.CH"
+    exit 0
+fi
+
+
+#------------------------------------------
+# List previous kerberos tokens
+#------------------------------------------
+if [[ "$list_tickets" = true ]]; then
+    klist
+    exit 0
+fi
+
+
+#------------------------------------------
+# Initialize kerberos token
+#------------------------------------------
+# Unless we're using --r or --renew, first check if we have a valid ticket already
+if [[ "$renew_ticket" = true || "$has_previous_ticket" = false ]]; then
+    echo "Initializing Kerberos token for: $user@CERN.CH"
+    if command -v k5start > /dev/null 2>&1; then
+        # Use k5start with a keytab if it's available
+        k5start_args=("-b" "-K" "10" "-l" "7d" "-r" "CERN.CH" "-u" "$user")
+        if [[ -e "$HOME/.keytab" ]]; then
+            k5start_args+=("-f" "$HOME/.keytab")
+        fi
+
+        k5start "${k5start_args[@]}"
+    else
+        # Fallback to kinit. In macOS, kinit queries the keychain
+        kinit -l 7d --renewable -r 7d "${user}@CERN.CH" 2> /dev/null
+    fi
+else
+    echo "Existing previous token for: $user@CERN.CH"
+    echo "Run with -r or --renew to force a re-initialization of the ticket"
+fi
+
+exit 0

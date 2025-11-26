@@ -1,0 +1,31 @@
+#!/usr/bin/expect -f
+
+# Check arguments
+if { $argc != 2 } {
+    puts "Usage: $argv0 <login> <otp>"
+    puts "For 'ssh -fNM \${login}'"
+    exit 1
+}
+
+set login [lindex $argv 0]
+set otp [lindex $argv 1]
+set timeout 15
+
+# Start SSH in the background with control master mode
+puts "Starting ssh ControlMaster session for $login"
+spawn ssh -fNM $login
+
+# Wait for the OTP prompt
+expect {
+    -re "\($login\).*2nd factor.*: " {
+        # Send OTP
+        send -- "$otp\r"
+    }
+    timeout {
+        puts "Timed out waiting for OTP prompt."
+        exit 1
+    }
+}
+
+# Wait for ssh to finish initialization
+expect eof

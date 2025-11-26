@@ -1,0 +1,21 @@
+# Chezmoi local configuration template, by Jean Yves Beaucamp - 2025
+
+# We automate the configuration based on the platform name we specify here, and the OS
+# the configuration is being installed to.
+{{- $platform := promptChoiceOnce . "platform" "What platform are we configuring this for" (list "personal" "iflp" "cern") }}
+
+# Is this a workstation? I.e., does it have a monitor attached to it?
+{{- $is_workstation := promptBoolOnce . "is_workstation" "Is this a workstation with a screen attached to it" true }}
+
+# We use the email address (and the name) to setup git
+{{- $email := promptStringOnce . "email" "Email address" "jeanyvesb9@gmail.com" }}
+
+data:
+    platform: {{ $platform | quote }}
+    is_workstation: {{ $is_workstation }}
+
+    name: "Jean Yves Beaucamp"
+    email: {{ $email | quote }}
+
+    # Placeholder. Cannot really be used yet as the current scripts have been written for X11
+    install_wacom_scripts: false

@@ -1,0 +1,7 @@
+Browser.Name: TRootBrowser
+Root.ShowPath: false
+
+{{- if eq .platform "cern" }}
+Unix.*.Root.DynamicPath:    .:$(ROOTSYS)/lib:$(HOME)/RootUtils/lib:
+Unix.*.Root.MacroPath:      .:$(HOME)/RootUtils:$(HOME)/RootUtils/atlasrootstyle:
+{{- end }}

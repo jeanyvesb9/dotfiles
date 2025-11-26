@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# Compressed files extraction script, by Jean Yves Beaucamp - 2025.
+
+files=()
+
+#------------------------------------------
+# Parse cmd line arguments
+#------------------------------------------
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            echo "Usage: extract file1 [file2, ...]"
+            echo
+            echo "File extraction script."
+            echo "The appropriate command will be executed depending on the file extension."
+            echo
+            echo "Options:"
+            echo "  file1 [file2, ...]      Files to extract."
+            echo "  -h, --help              Show this help message and exit."
+            exit 0
+            ;;
+        --) # stop parsing
+            shift
+            break
+            ;;
+        -*)
+            echo "extract: unknown option: $1" >&2
+            exit 1
+            ;;
+        *)
+            files+=($1)
+            shift
+            ;;
+    esac
+done
+
+
+if [[ ${#files[@]} -eq 0 ]]; then
+    echo "No files provided"
+    exit 0
+fi
+
+
+# Start parsing files
+#SAVEIFS=$IFS # Internal field separator
+#IFS=$(echo -en "\n\b")
+
+for file in "${files[@]}"; do
+    if [[ -f "$file" ]]; then
+        case "${file%,}" in
+            *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
+                tar xvf "$file"
+                ;;
+            *.lzma)
+                unlzma "$file"
+                ;;
+            *.bz2)
+                bunzip2 "$file"
+                ;;
+            *.cbr|*.rar)
+                unrar x -ad "$file"
+                ;;
+            *.gz)
+                gunzip "$file"
+                ;;
+            *.cbz|*.epub|*.zip)
+                unzip "$file"
+                ;;
+            *.z)
+                uncompress "$file"
+                ;;
+            *.7z|*.arj|*.cab|*.cb7|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.pkg|*.rpm|*.udf|*.wim|*.xar)
+                7z x "$file"
+                ;;
+            *.xz)
+                unxz "$file"
+                ;;
+            *.exe)
+                cabextract "$file"
+                ;;
+            *.cpio)
+                cpio -id < "$file"
+                ;;
+            *.cba|*.ace)
+                unace x "$file"
+                ;;
+            *)
+                echo "extract: '$file' - unknown archive method"
+                exit 1
+                ;;
+        esac
+    else
+        echo "File ${file} does not exist"
+        exit 1
+    fi
+done
+
+#IFS=$SAVEIFS
+
+exit 0

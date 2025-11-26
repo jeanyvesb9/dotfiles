@@ -1,0 +1,21 @@
+{{- if eq .platform "cern" }}
+# The testbed doesn't load zsh automatically, so we need to switch shells manually
+
+ZSH_VERSION=$(zsh --version | awk '{ print $2 }')
+
+if [[ $($HOME/.local/bin/version_compare $ZSH_VERSION 5.1) == 2 ]]; then
+    . /etc/os-release
+    if [[ $ID == "centos" && $VERSION_ID == 7* ]]; then
+        export SHELL=$HOME/.local/centos7/bin/zsh
+    else
+    echo "ZSH version > 5.1 is not available for the current OS configuration; will open the latest ZSH version anyways, but powers    hell10k won't work!"
+        export SHELL=$(which zsh)
+    fi
+else
+    export SHELL=$(which zsh)
+fi
+
+exec $SHELL -l
+
+{{- end }} 
+

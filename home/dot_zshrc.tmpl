@@ -1,0 +1,230 @@
+# zsh config file, by Jean Yves Beaucamp - 2025.
+
+### GENERAL ### --------------------------------------------------------------------
+export TERM="xterm-256color" # Required by Oh-My-TMux
+export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
+export VISUAL="vim"
+export EDITOR="vim"
+
+
+
+### PATHS ### ----------------------------------------------------------------------
+export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/usr/local/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/.local/lib:$HOME/.local/lib64:$LD_LIBRARY_PATH"
+export LD_RUN_PATH="$HOME/.local/lib:$HOME/.local/lib64:$LD_RUN_PATH"
+
+# Load local Rust cargo environment (if available)
+if [[ -f $HOME/.cargo/env ]]; then
+    . "$HOME/.cargo/env"
+fi
+
+# Go install location
+if [[ -d "$HOME/.local/go" ]]; then
+    export GOPATH="$HOME/.local/go"
+    export GOBIN="$HOME/.local/bin"
+fi
+
+{{- if eq .platform "cern" }}
+# CERN LXPlus OS-specific paths
+source "$HOME/.local/share/dotfiles/cern/lxp_paths_setup.zsh"
+{{- end }}
+
+{{- if .is_workstation }}
+# Workstation-specific paths
+source "$HOME/.local/share/dotfiles/workstation/setup.zsh"
+{{- end }}
+
+
+
+### Global TMux session ### --------------------------------------------------------
+{{- if .is_workstation }}
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] \
+        && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+    exec tmux new-session -A -s main
+fi
+{{- end }}
+
+
+
+### OH MY ZSH ### ------------------------------------------------------------------
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Uncomment the following line to use case-sensitive completion.
+CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
+# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
+# COMPLETION_WAITING_DOTS="true"
+
+# Disable auto-update, since we manage Oh-My-Zsh with chezmoi
+DISABLE_AUTO_UPDATE="true"
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(command-not-found
+         history     
+         git
+         zsh-interactive-cd
+         zsh-syntax-highlighting
+         zsh-autosuggestions
+         )
+
+# Sourcing oh-my-zsh
+# Your plugins will not work without this source.
+source $ZSH/oh-my-zsh.sh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+
+### ALIASES ### --------------------------------------------------------------------
+
+{{- if and (eq .chezmoi.os "linux") (.is_workstation) }}
+# Open ('a-la macOS')
+alias open='xdg-open'
+{{- end }}
+
+# Git alias for linux_config
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+# On first time, run:
+#   $ config config --local status.showUntrackedFiles no
+
+# vim
+if command -v nvim &> /dev/null; then
+    alias vim='nvim'
+fi
+
+# clipboard: use as a pipe destination
+{{- if eq .chezmoi.os "linux" }}
+alias cb='xclip -selection c'
+{{- else if eq .chezmoi.os "darwin" }}
+alias cb='pbcopy'
+{{- end }}
+
+# broot
+if [[ -f $HOME/.config/broot/launcher/bash/br ]]; then
+    source "$HOME/.config/broot/launcher/bash/br"
+    alias bs='br --sizes'
+fi
+
+# Changing "ls" to "eza"
+if command -v eza &> /dev/null; then
+    alias ls='eza --color=always --group-directories-first' # my preferred listing
+    alias la='eza -a --color=always --group-directories-first' # all files and dirs
+    alias l='eza -la --icons --color=always --group-directories-first' # list all
+    alias ll='eza -l --icons --color=always --group-directories-first' # list
+    alias lla='eza -la --icons --color=always --group-directories-first' # list all
+    alias lt='eza -aT --color=always --group-directories-first' # tree listing
+    alias l.='eza -a | egrep "^\."'
+fi
+
+# Colorize grep output (good for log files)
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Confirm before overwriting something
+alias cp="cp -i"
+alias mv='mv -i'
+alias rm='rm -i'
+
+# Add global progress info
+alias rsyncp="rsync --info=progress2"
+
+# Adding flags
+alias df='df -h' # Human-readable sizes
+alias free='free -m' # Show sizes in MB
+
+{{- if eq .chezmoi.os "linux" }}
+# get error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+{{- end }}
+
+{{- if and (.is_workstation) (eq .chezmoi.os "linux") }}
+# Airplay receiver
+alias airplay='rpiplay -n "$(hostname)"'
+{{- end }}
+
+# TMux
+alias ta='tmux a'
+
+# SSH
+{{- if eq .chezmoi.os "darwin" }}
+# To skip the "LANG LC_*" warnings, we override the default macOS ssh config in /etc/ssh/ssh_config
+alias ssh='ssh -F ~/.ssh/config'
+{{- end }}
+
+
+
+### Custom functions ### -----------------------------------------------------------
+source $HOME/.local/share/dotfiles/common_functions.zsh
+
+
+
+# Git ------------------------------------------------------------------------------
+alias glp='git --no-pager log --pretty="format:%x09%<(11)%C(auto)%h %<(22)%aN %<(13)%ad %d %s" --date="format:%Y-%m-%d %H:%M"'
+
+
+
+# CERN -----------------------------------------------------------------------------
+source $HOME/.local/share/dotfiles/cern/setup.zsh
+
+
+
+# IFLP -----------------------------------------------------------------------------
+{{- if .is_workstation }}
+source $HOME/.local/share/dotfiles/iflp/iflp_setup.zsh
+{{- end }}
+
+
+
+### CONDA/MAMBA ### ----------------------------------------------------------------
+{{- if .is_workstation }}
+# We need to safeguard the conda/mamba initialization on CERN hosts
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/jeany/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/jeany/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/home/jeany/mambaforge/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/jeany/mambaforge/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "/home/jeany/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/home/jeany/mambaforge/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
+
+{{- end }}
+

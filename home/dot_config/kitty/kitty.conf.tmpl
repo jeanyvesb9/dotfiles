@@ -1,0 +1,32 @@
+# Kitty config file, by Jean Yves Beaucamp
+
+# We use Tmux for terminal multiplexing/tab management, so we don't need the Kitty-specific features here
+# We will remove some of the shortcuts, so that they don't accidentally call kitty's functions
+map ctrl+shift+h discard_event
+map ctrl+shift+j discard_event
+map ctrl+shift+k discard_event
+map ctrl+shift+l discard_event
+
+# Font
+font_family Source Code Pro for Powerline
+font_size 8
+
+# Theme
+include ./nord-kitty/nord.conf
+
+# Infinity scrollback
+scrollback_lines -1
+
+# Remote control (from other processes)
+allow_remote_control yes
+listen_on unix:/tmp/kitty
+
+# Disable check on exit
+confirm_os_window_close 0
+
+{{- if eq .chezmoi.os "darwin" }}
+# macOS-specific configs
+macos_option_as_alt left
+map alt+left send_text all \x1b\x62
+map alt+right send_text all \x1b\x66
+{{- end }}

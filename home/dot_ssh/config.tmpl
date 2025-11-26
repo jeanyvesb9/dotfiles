@@ -1,0 +1,63 @@
+{{- if ne .platform "cern" }}
+HOST lxplus*
+    ForwardX11 yes
+    ForwardX11Trusted no
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+    PubkeyAuthentication no
+    ForwardAgent yes
+    CheckHostIP no
+    ServerAliveInterval 100
+    ControlPath {{ if eq .chezmoi.os "darwin" }} ~/.ssh/%r@%h:%p {{- else }} /run/user/%i/%r@%h:%p {{- end }}
+    ControlMaster auto
+    ControlPersist yes
+
+HOST jbeaucam@lxplus.cern.ch
+    HostName lxplus.cern.ch
+    User jbeaucam
+
+HOST lxtunnel lxtunnel.cern.ch
+    Hostname lxtunnel.cern.ch
+    User jbeaucam
+    ForwardX11 yes
+    ForwardX11Trusted no
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+    PubkeyAuthentication no
+    ForwardAgent yes
+    CheckHostIP no
+    ServerAliveInterval 100
+    ControlPath {{ if eq .chezmoi.os "darwin" }} ~/.ssh/%r@%h:%p {{- else }} /run/user/%i/%r@%h:%p {{- end }}
+    ControlMaster auto
+    ControlPersist yes
+    Protocol 2
+    DynamicForward 8090
+
+HOST IFLP-Jupyter
+    HostName 163.10.100.39
+    User jbeaucamp
+    ForwardX11 yes
+    ForwardX11Trusted no
+    HashKnownHosts yes
+
+{{- else }}
+
+host pc-tbed-pub-*
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+    GSSAPITrustDns yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+
+host atlasgw
+    GSSAPITrustDns yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+    ForwardX11 yes
+
+{{- end }}
+
+HOST *
+    ServerAliveInterval 60
