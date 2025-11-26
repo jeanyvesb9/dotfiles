@@ -58,8 +58,8 @@ done
 
 
 # Use the default user if a username was not provided
-if [[ -z $user ]]; then
-    if [[ -v CERN_USERNAME ]]; then
+if [[ -z "$user" ]]; then
+    if [[ ! -z "$CERN_USERNAME" ]]; then
         user="$CERN_USERNAME"
     else
         user="$USER"

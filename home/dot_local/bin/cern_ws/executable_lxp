@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # CERN LXPlus (and similar nodes) ssh helper script, by Jean Yves Beaucamp - 2025.
 
-if [[ -v CERN_USERNAME ]]; then
+if [[ ! -z "$CERN_USERNAME" ]]; then
     user="$CERN_USERNAME"
 else
     user="$USER"
