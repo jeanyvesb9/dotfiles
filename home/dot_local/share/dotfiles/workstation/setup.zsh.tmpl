@@ -9,6 +9,8 @@ export PATH="$HOME/.local/bin/linux_ws:$PATH"
     export PATH="$HOME/.local/bin/wacom:$PATH"
 {{- end -}}
 
+{{- else if eq .chezmoi.os "darwin" -}}
+export PATH="$HOME/.local/bin/macos_ws:$PATH"
 {{- end -}}
 
 

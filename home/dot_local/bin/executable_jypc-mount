@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Mounts JeanYves-PC
+
+echo "Mounting JeanYves-PC in /Users/Shared/JeanYves-PC. Available in Finder at \"Jean's MacBook Pro\""
+
+sshfs jeany@JeanYves-PC:/ /Users/Shared/JeanYves-PC -o IdentityFile=/Users/jeany/.ssh/id_ed25519 -p 2215 -ovolname=JeanYves-PC

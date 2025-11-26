@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Unmounts JeanYves-PC
+
+echo "Unmounting JeanYves-PC"
+
+umount /Users/Shared/JeanYves-PC

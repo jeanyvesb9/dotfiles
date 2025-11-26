@@ -18,6 +18,15 @@
 .local/bin/linux_ws
 {{- end }}
 
+{{- if or (ne .chezmoi.os "darwin") (not .is_workstation) }}
+.local/bin/macos_ws
+{{- end }}
+
+{{- if eq .chezmoi.hostname "JeanYves-PC" }}
+.local/bin/jypc-mount
+.local/bin/jypc-unmount
+{{- end }}
+
 
 # ----------------------------------------------------
 # CERN scripts

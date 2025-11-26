@@ -44,20 +44,28 @@ HOST IFLP-Jupyter
 
 {{- else }}
 
-host pc-tbed-pub-*
+HOST pc-tbed-pub-*
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
     GSSAPITrustDns yes
     GSSAPIAuthentication yes
     GSSAPIDelegateCredentials yes
 
-host atlasgw
+HOST atlasgw
     GSSAPITrustDns yes
     GSSAPIAuthentication yes
     GSSAPIDelegateCredentials yes
     ForwardX11 yes
 
 {{- end }}
+
+{{ if ne .chezmoi.hostname "JeanYves-PC" }}
+HOST JeanYves-PC
+    HostName 192.168.10.50
+    Port 2215
+    User jeany
+{{- end }}
+
 
 HOST *
     ServerAliveInterval 60

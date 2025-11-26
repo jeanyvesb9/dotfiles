@@ -56,6 +56,7 @@
     - '*/.logo'
     - '*/.tmux.conf.local'
 
+
 # Kitty ----------------------------------------------------------------------------
 '.config/kitty/nord-kitty':
   type: archive
@@ -65,3 +66,12 @@
   refreshPeriod: '168h'
   exclude:
     - '*/screenshot.png'
+
+
+# macOS ----------------------------------------------------------------------------
+{{- if eq .chezmoi.os "darwin" }}
+'.local/bin/macos_ws/screencapture-nag-remover.sh':
+  type: file
+  url: 'https://raw.githubusercontent.com/luckman212/screencapture-nag-remover/refs/heads/main/screencapture-nag-remover.sh'
+  refreshPerios: '168h'
+{{- end }}
