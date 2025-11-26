@@ -9,7 +9,7 @@ map ctrl+shift+l discard_event
 
 # Font
 font_family Source Code Pro for Powerline
-font_size 8
+font_size {{ if eq .chezmoi.hostname "Jeans-Macbook-Pro" }} 12 {{ else }} 8 {{ end }}
 
 # Theme
 include ./nord-kitty/nord.conf
