@@ -1,6 +1,6 @@
 # zsh config file, by Jean Yves Beaucamp - 2025.
 
-### GENERAL ### --------------------------------------------------------------------
+# General --------------------------------------------------------------------------
 export TERM="xterm-256color" # Required by Oh-My-TMux
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export VISUAL="vim"
@@ -8,7 +8,7 @@ export EDITOR="vim"
 
 
 
-### PATHS ### ----------------------------------------------------------------------
+# Paths ----------------------------------------------------------------------------
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/usr/local/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$HOME/.local/lib64:$LD_LIBRARY_PATH"
 export LD_RUN_PATH="$HOME/.local/lib:$HOME/.local/lib64:$LD_RUN_PATH"
@@ -24,20 +24,21 @@ if [[ -d "$HOME/.local/go" ]]; then
     export GOBIN="$HOME/.local/bin"
 fi
 
-{{- if eq .platform "cern" }}
+{{ if eq .platform "cern" }}
 # CERN LXPlus OS-specific paths
 source "$HOME/.local/share/dotfiles/cern/lxp_paths_setup.zsh"
 {{- end }}
 
-{{- if .is_workstation }}
+
+{{ if .is_workstation }}
 # Workstation-specific paths
 source "$HOME/.local/share/dotfiles/workstation/setup.zsh"
 {{- end }}
 
 
 
-### Global TMux session ### --------------------------------------------------------
-{{- if .is_workstation }}
+{{ if .is_workstation }}
+# Global TMux session --------------------------------------------------------------
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] \
         && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
     exec tmux new-session -A -s main
@@ -46,7 +47,7 @@ fi
 
 
 
-### OH MY ZSH ### ------------------------------------------------------------------
+# Oh-my-zsh ------------------------------------------------------------------------
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -102,7 +103,7 @@ source $ZSH/oh-my-zsh.sh
 
 
 
-### ALIASES ### --------------------------------------------------------------------
+# Aliases --------------------------------------------------------------------------
 
 {{- if and (eq .chezmoi.os "linux") (.is_workstation) }}
 # Open ('a-la macOS')
@@ -168,15 +169,15 @@ alias airplay='rpiplay -n "$(hostname)"'
 # TMux
 alias ta='tmux a'
 
+{{ if eq .chezmoi.os "darwin" }}
 # SSH
-{{- if eq .chezmoi.os "darwin" }}
 # To skip the "LANG LC_*" warnings, we override the default macOS ssh config in /etc/ssh/ssh_config
 alias ssh='ssh -F ~/.ssh/config'
 {{- end }}
 
 
 
-### Custom functions ### -----------------------------------------------------------
+# Custom functions -----------------------------------------------------------------
 source $HOME/.local/share/dotfiles/common_functions.zsh
 
 
@@ -191,15 +192,15 @@ source $HOME/.local/share/dotfiles/cern/setup.zsh
 
 
 
+{{ if .is_workstation }}
 # IFLP -----------------------------------------------------------------------------
-{{- if .is_workstation }}
 source $HOME/.local/share/dotfiles/iflp/iflp_setup.zsh
 {{- end }}
 
 
 
-### CONDA/MAMBA ### ----------------------------------------------------------------
-{{- if .is_workstation }}
+{{ if .is_workstation }}
+# Conda/Mamba ----------------------------------------------------------------------
 
 {{- if eq .chezmoi.os "darwin" }}
 {{ template "conda/macos" }}

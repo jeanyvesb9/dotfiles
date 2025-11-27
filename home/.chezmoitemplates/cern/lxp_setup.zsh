@@ -156,5 +156,5 @@ alias gaiw='git atlas init-workdir ssh://git@gitlab.cern.ch:7999/jbeaucam/athena
 
 
 # LaTeX -----------------------------------------------------------------------
-export PATH='/cvmfs/sft.cern.ch/lcg/external/texlive/2025/bin/x86_64-linux:$PATH'
+export PATH="/cvmfs/sft.cern.ch/lcg/external/texlive/2025/bin/x86_64-linux:$PATH"
 
