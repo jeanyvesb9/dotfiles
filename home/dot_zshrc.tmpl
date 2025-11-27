@@ -94,12 +94,19 @@ plugins=(command-not-found
          zsh-autosuggestions
          )
 
+# Setup fzf (required for zsh-interactive-cd)
+if [[ -f $HOME/.fzf.zsh ]]; then
+    source $HOME/.fzf.zsh
+elif command -v fzf &> /dev/null; then
+    source <(fzf --zsh)
+fi
+
 # Sourcing oh-my-zsh
 # Your plugins will not work without this source.
 source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
 
 
 
@@ -172,7 +179,7 @@ alias ta='tmux a'
 {{ if eq .chezmoi.os "darwin" }}
 # SSH
 # To skip the "LANG LC_*" warnings, we override the default macOS ssh config in /etc/ssh/ssh_config
-alias ssh='ssh -F ~/.ssh/config'
+alias ssh="ssh -F $HOME/.ssh/config"
 {{- end }}
 
 
@@ -199,7 +206,7 @@ source $HOME/.local/share/dotfiles/iflp/iflp_setup.zsh
 
 
 
-{{ if .is_workstation }}
+{{- if .is_workstation }}
 # Conda/Mamba ----------------------------------------------------------------------
 
 {{- if eq .chezmoi.os "darwin" }}
