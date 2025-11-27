@@ -26,6 +26,10 @@
 .local/bin/jypc-unmount
 {{- end }}
 
+{{- if not .is_workstation }}
+.config/kitty
+{{- end }}
+
 
 # ----------------------------------------------------
 # CERN scripts
