@@ -21,7 +21,7 @@
 .local/bin/macos_ws
 {{- end }}
 
-{{- if eq .chezmoi.hostname "JeanYves-PC" }}
+{{- if or (eq .chezmoi.hostname "JeanYves-PC") (eq .platform "cern") }}
 .local/bin/jypc-mount
 .local/bin/jypc-unmount
 {{- end }}

@@ -6,7 +6,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # Save the hostname to a file, to track tmux sessions
 echo "$(LC_TIME="en_GB.UTF-8" date): $(hostname)" >> $HOME/.hostname_history
 
-if [[ $($HOME/.local/bin/version_compare $ZSH_VERSION 5.1) == 2 ]]; then
+if [[ $($HOME/.local/bin/version-compare $ZSH_VERSION 5.1) == 2 ]]; then
     . /etc/os-release
     if [[ $ID == "centos" && $VERSION_ID == 7* ]]; then
         #Need to load a custom ZSH version, if it's available

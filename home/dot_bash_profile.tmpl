@@ -3,7 +3,7 @@
 
 ZSH_VERSION=$(zsh --version | awk '{ print $2 }')
 
-if [[ $($HOME/.local/bin/version_compare $ZSH_VERSION 5.1) == 2 ]]; then
+if [[ $($HOME/.local/bin/version-compare $ZSH_VERSION 5.1) == 2 ]]; then
     . /etc/os-release
     if [[ $ID == "centos" && $VERSION_ID == 7* ]]; then
         export SHELL=$HOME/.local/centos7/bin/zsh
