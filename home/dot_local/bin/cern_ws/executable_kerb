@@ -69,9 +69,14 @@ fi
 
 has_previous_ticket=false
 # It can be "Default principal: " or "Principal: ", so we have to generalize it
-if [[ $(klist 2>/dev/null) = *"rincipal: $user@CERN.CH"* ]]; then
-    has_previous_ticket=true
+klist_output=$(klist 2>/dev/null)
+if [[ "$klist_output" = *"rincipal: $user@CERN.CH"* ]]; then
+    # We have a file, but now we need to check if the "master" krbtgt ticket is expired
+    if ! echo "$klist_output" | grep -q ">>>Expired<<<.*krbtgt/CERN.CH"; then
+        has_previous_ticket=true
+    fi
 fi
+
 
 #------------------------------------------
 # Destroy previous kerberos token
