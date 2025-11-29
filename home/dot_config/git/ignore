@@ -1,2 +1,5 @@
+# Copyright (C) 2025 Jean Yves Beaucamp
+# Files to be globally ignored by git
+
 .DS_Store
 *.pyc

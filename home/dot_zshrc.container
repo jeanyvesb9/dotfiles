@@ -1,1 +1,4 @@
+# Copyright (C) 2025 Jean Yves Beaucamp
+# Main zsh config file for LXPlus apptainer instances
+
 . $HOME/.zprofile

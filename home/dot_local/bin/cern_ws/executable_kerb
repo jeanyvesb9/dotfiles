@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# CERN kerberos session initializer script, by Jean Yves Beaucamp - 2025.
+# Copyright (C) 2025 Jean Yves Beaucamp
+# CERN kerberos session initializer
 
 user=""
 

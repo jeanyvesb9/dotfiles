@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# Copyright (C) 2021 Jean Yves Beaucamp
 # Stops the docker container "cvmfs_docker"
 
 echo "Stopping Docker container 'cvmfs_docker'"

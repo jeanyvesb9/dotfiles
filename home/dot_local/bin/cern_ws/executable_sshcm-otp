@@ -1,4 +1,6 @@
 #!/usr/bin/expect -f
+# Copyright (C) 2025 Jean Yves Beaucamp
+# LXPlus 2FA SSH connection helper
 
 # Check arguments
 if { $argc != 2 } {

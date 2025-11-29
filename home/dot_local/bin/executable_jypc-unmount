@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# Copyright (C) 2025 Jean Yves Beaucamp
 # Unmounts JeanYves-PC
 
 echo "Unmounting JeanYves-PC"

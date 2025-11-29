@@ -1,3 +1,4 @@
+# Copyright (C) 2025 Jean Yves Beaucamp
 # Helper functions. These cannot be defined in scripts, as they may need to modify the active shell (e.g. in up)
 
 #=============================================================================

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# Copyright (C) 2021 Jean Yves Beaucamp
 # Starts a docker container for CVMFS auto-mounting at /cvmfs
 
 echo "Starting Docker container 'cvmfs_docker'. CVMFS tree will be accesible after ~30s at /cvmfs"

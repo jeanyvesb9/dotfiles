@@ -1,5 +1,7 @@
 {{- if eq .platform "cern" }}
+# Copyright (C) 2025 Jean Yves Beaucamp
 # The testbed doesn't load zsh automatically, so we need to switch shells manually
+# This avoids loading .bashrc entirely
 
 ZSH_VERSION=$(zsh --version | awk '{ print $2 }')
 

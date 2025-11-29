@@ -1,2 +1,5 @@
+" Copyright (C) 2025 Jean Yves Beaucamp
+" Vim config file, for environments where we don't have access to nvim
+
 set tabstop=4 shiftwidth=4 expandtab
 set number

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Written by Jean Yves Beaucamp - 2021
-#
+# Copyright (C) 2021 Jean Yves Beaucamp
+
 # INSTRUCTIONS:
 # Run with a xbindkeys binding to one of the Pad's buttons, or as a standalone script.
 #

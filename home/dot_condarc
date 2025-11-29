@@ -1,1 +1,4 @@
+# Copyright (C) 2025 Jean Yves Beaucamp
+# Conda/Mamba baseline config
+
 auto_activate_base: false

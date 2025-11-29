@@ -1,3 +1,6 @@
+" Copyright (C) 2025 Jean Yves Beaucamp
+" NeoVim config file
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 

@@ -1,4 +1,7 @@
 #! /bin/sh
+# Copyright (C) 2025 Jean Yves Beaucamp
+# Trigger a screenshot from the terminal
+
 output='/home/jeany/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png'
 
 case "$1" in

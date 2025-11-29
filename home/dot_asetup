@@ -1,3 +1,4 @@
+# Copyright (C) 2025 Jean Yves Beaucamp
 
 # See https://twiki.cern.ch/twiki/bin/view/Atlas/AtlasSetup for details
 # To recreate this file, simply delete it and do setupATLAS
@@ -17,5 +18,4 @@
 
 # the release dir name has the project prepended
 #projtest = True
-
 

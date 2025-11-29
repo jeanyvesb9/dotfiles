@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# CERN LXPlus (and similar nodes) ssh helper script, by Jean Yves Beaucamp - 2025.
+# Copyright (C) 2025 Jean Yves Beaucamp
+# CERN LXPlus (and similar nodes) ssh connection manager
 
 if [[ ! -z "$CERN_USERNAME" ]]; then
     user="$CERN_USERNAME"

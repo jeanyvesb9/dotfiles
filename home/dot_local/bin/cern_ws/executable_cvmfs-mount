@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# Copyright (C) 2021 Jean Yves Beaucamp
 # Mounts CVMFS repositories
 
 echo "Mounting CVMFS repositories. CVMFS tree will be accesible after ~10s at /cvmfs"

@@ -1,4 +1,7 @@
-# CERN LXPlus (and similar nodes) zsh paths config file, by Jean Yves Beaucamp - 2025.
+# Copyright (C) 2025 Jean Yves Beaucamp
+# CERN LXPlus (and similar nodes) zsh paths config
+# These need to be loaded at the beginning of .zshrc, before we start checking for
+# existing scripts/programs to add aliases
 
 # Source global definitions
 if [ -f /etc/zshrc ]; then

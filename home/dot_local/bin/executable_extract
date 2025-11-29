@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Compressed files extraction script, by Jean Yves Beaucamp - 2025.
+# Copyright (C) 2025 Jean Yves Beaucamp
+# Compressed files extraction script
 
 files=()
 

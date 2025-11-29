@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (C) 2025 Jean Yves Beaucamp
+# Script used to compare software version numbers
 
 # Returns 0 if a == b
 # Returns 1 if a >  b

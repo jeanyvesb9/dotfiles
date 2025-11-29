@@ -1,3 +1,6 @@
+# Copyright (C) 2025 Jean Yves Beaucamp
+# ROOT config file
+
 Browser.Name: TRootBrowser
 Root.ShowPath: false
 
