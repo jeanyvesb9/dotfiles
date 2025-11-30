@@ -76,3 +76,13 @@ array_contains () {
   done
   return $in
 }
+
+
+
+#=============================================================================
+# reset_display
+#=============================================================================
+## reset_diplay : reset the DISPLAY variable to the default :1 value
+reset_display () {
+    export DISPLAY=":1"
+}
