@@ -87,6 +87,7 @@ while [[ $# -gt 0 ]]; do
             echo " + '': lxplus"
             echo " + '<NUM>': lxplus<NUM>"
             echo " + 'abm<NUM>' | 'b<NUM>: lxplus8s0<NUM>"
+            echo " + 'arm': lxplus-arm"
             echo " + 'lxtunnel' | 'tunnel' | 'lxt' | 't': lxtunnel"
             echo
             echo "Examples:"
@@ -155,6 +156,8 @@ elif [[ "$lxhost_arg" =~ ^abm([0-9]+)$ || "$lxhost_arg" =~ ^ab([0-9]+)$ || "$lxh
     lxhost="lxplus8s0${host_number}"
 elif [[ "$lxhost_arg" = "lxtunnel" || "$lxhost_arg" = "tunnel" || "$lxhost_arg" = "t" ]]; then
     lxhost="lxtunnel"
+elif [[ "$lxhost_arg" = "arm" ]]; then
+    lxhost="lxplus-arm"
 else
     lxhost="lxplus$lxhost_arg"
 fi
