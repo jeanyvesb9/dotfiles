@@ -4,6 +4,7 @@
 
 user=""
 
+check_ticket_only=false
 renew_ticket=false
 destroy_ticket=false
 list_tickets=false
@@ -25,8 +26,12 @@ while [[ $# -gt 0 ]]; do
             list_tickets=true
             shift
             ;;
+        -c|--check)
+            check_ticket_only=true
+            shift
+            ;;
         -h|--help)
-            echo "Usage: kerb [-r|--renew] [-d|--destroy] [-l|--list] [user]"
+            echo "Usage: kerb [-r|--renew] [-d|--destroy] [-l|--list] [-c|--check] [user]"
             echo
             echo "CERN Kerberos token initialization manager."
             echo
@@ -35,6 +40,7 @@ while [[ $# -gt 0 ]]; do
             echo "  -r, --renew             Renew the ticket, even if a ticket for the same user already exists."
             echo "  -d, --destroy           Destroy all existing tickets for the indicated user."
             echo "  -l, --list              List all existing tickets."
+            echo "  -c, --check             Check if we have a valid Kerberos ticket."
             echo "  -h, --help              Show this help message and exit."
             exit 0
             ;;
@@ -68,6 +74,9 @@ if [[ -z "$user" ]]; then
 fi
 
 
+#------------------------------------------
+# Check if we have an existing valid token
+#------------------------------------------
 has_previous_ticket=false
 # It can be "Default principal: " or "Principal: ", so we have to generalize it
 klist_output=$(klist 2>/dev/null)
@@ -76,6 +85,15 @@ if [[ "$klist_output" = *"rincipal: $user@CERN.CH"* ]]; then
     if ! echo "$klist_output" | grep -q ">>>Expired<<<.*krbtgt/CERN.CH"; then
         has_previous_ticket=true
     fi
+fi
+
+if [[ "$check_ticket_only" = true ]]; then
+    if [[ "$has_previous_ticket" = true ]]; then
+        echo "There is a valid Kerberos ticket already for $user"
+    else
+        echo "No valid Kerberos ticket for $user"
+    fi
+    exit 0
 fi
 
 
