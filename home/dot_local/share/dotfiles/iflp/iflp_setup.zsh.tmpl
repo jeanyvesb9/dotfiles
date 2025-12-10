@@ -1,8 +1,10 @@
 # Copyright (C) 2025 Jean Yves Beaucamp
 # IFLP-specific zsh config
 
-{{- if eq .platform "office" }}
-    alias mount-r5='sshfs jbeaucamp@163.10.100.39:/mnt/R5 /media/R5 -o allow_other'
+{{- if eq .platform "iflp" }}
+    {{- if .is_workstation }}
+        alias mount-r5='sshfs jbeaucamp@163.10.100.39:/mnt/R5 /media/R5 -o allow_other'
+    {{- end }}
 {{- else }}
     alias vpn-iflp="sudo openvpn $HOME/Dropbox/IFLP/Setup/cluster_gw2-UDP4-1194-Jean/gw2-UDP4-1194-Jean.ovpn"
 {{- end }}
