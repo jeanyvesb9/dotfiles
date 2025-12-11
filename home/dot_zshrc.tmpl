@@ -113,6 +113,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Aliases --------------------------------------------------------------------------
 
+# Reload shell config
+alias rld='source $HOME/.zshrc'
+
 {{- if and (eq .chezmoi.os "linux") (.is_workstation) }}
 # Open ('a-la macOS')
 alias open='xdg-open'
