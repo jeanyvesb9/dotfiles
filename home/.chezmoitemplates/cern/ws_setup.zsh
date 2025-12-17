@@ -7,10 +7,19 @@ export PATH="$HOME/.local/bin/cern_ws:$PATH"
 
 # Get OTP passwords
 # This uses pass-otp (https://github.com/tadfisher/pass-otp)
-# Before running the first time, you'll need to have a GPG secret keychain, which you
-# can initialize with $ gpg --full-generate-key.
-# Requires having the OTP secret keys already loaded in your local GPG keychain
-# They can be found in ~/Dropbox/cern/private/otp_secret_keys.txt
+# Before running the first time, you'll need to have a GPG secret key:
+#
+# $ gpg --full-generate-key # Use all the default options
+#
+# Now, get the uid for your created key from
+# $ gpg --list-keys
+# and use that uid to initialize the pass keychain storage, e.g.
+# $ pass init "Jean Yves Beaucamp <jeanyvesb9@gmail.com>"
+#
+# Finally, insert the secret otpauth SHA1 keys for the CERN accounts
+# $ pass otp insert cern-jbeaucam <otpauth-jbeaucam>
+# $ pass otp insert cern-jyb <otpauth-jyb>
+# The keys can be found in ~/Dropbox/cern/private/otp_secret_keys.txt
 alias otp-jbeaucam="pass otp cern-jbeaucam"
 alias otp-jyb="pass otp cern-jyb"
 
