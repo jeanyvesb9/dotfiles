@@ -68,6 +68,17 @@
     - '*/screenshot.png'
 
 
+# CERN -----------------------------------------------------------------------------
+{{- if .is_workstation }}
+'.local/bin/lxp-session-manager':
+  type: archive
+  url: 'https://github.com/jeanyvesb9/lxp-session-manager/archive/main.tar.gz'
+  exact: true
+  stripComponents: 1
+  refreshPeriod: '168h'
+{{- end }}
+
+
 # macOS ----------------------------------------------------------------------------
 {{- if eq .chezmoi.os "darwin" }}
 '.local/bin/macos_ws/screencapture-nag-remover.sh':
