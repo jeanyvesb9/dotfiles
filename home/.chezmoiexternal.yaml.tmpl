@@ -69,7 +69,7 @@
 
 
 # CERN -----------------------------------------------------------------------------
-{{- if .is_workstation }}
+{{- if eq .platform "personal" "iflp" }}
 '.local/bin/lxp-session-manager':
   type: archive
   url: 'https://github.com/jeanyvesb9/lxp-session-manager/archive/main.tar.gz'
