@@ -6,7 +6,7 @@ export CERN_USERNAME="jbeaucam"
 export PATH="$HOME/.local/bin/cern_ws:$PATH"
 
 # LXPlus session manager scripts and aliases
-export PATH="$HOME/.local/bin/lxp-session-manager:$PATH"
+export PATH="$HOME/.local/bin/lxp-session-manager/scripts:$PATH"
 
 alias lxtunnel="lxp lxtunnel"
 alias lxtunnelcm="lxp --cm lxtunnel"
