@@ -36,7 +36,7 @@
 # CERN scripts
 # ----------------------------------------------------
 {{- if not (eq .platform "personal" "iflp") }}
-.local/bin/cern_ws
+.local/bin/cern_ws/
 {{- end }}
 
 
@@ -52,6 +52,8 @@
 # CERN LXPlus setup
 # ----------------------------------------------------
 {{- if ne .platform "cern" }}
+.local/share/dotfiles/cern/lxp_paths_setup.zsh
+
 .bashrc
 .bash_profile
 .zshrc.container
