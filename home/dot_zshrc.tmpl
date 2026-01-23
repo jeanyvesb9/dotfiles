@@ -13,6 +13,9 @@ export EDITOR="vim"
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/usr/local/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$HOME/.local/lib64:$LD_LIBRARY_PATH"
 export LD_RUN_PATH="$HOME/.local/lib:$HOME/.local/lib64:$LD_RUN_PATH"
+{{ if eq .platform "personal" "iflp" }}
+fpath=("$HOME/.local/bin/lxp-session-manager/autocomplete/zsh" $fpath)
+{{- end }}
 
 # Load local Rust cargo environment (if available)
 if [[ -f $HOME/.cargo/env ]]; then
