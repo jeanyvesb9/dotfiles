@@ -6,7 +6,7 @@ export CERN_USERNAME="jbeaucam"
 export PATH="$HOME/.local/bin/cern_ws:$PATH"
 
 # LXPlus session manager scripts and aliases
-export PATH="$HOME/.local/bin/lxp-session-manager/scripts:$PATH"
+export PATH="$HOME/.local/bin/lxp-tools/scripts:$PATH"
 
 alias lxtunnel="lxp lxtunnel"
 alias lxtunnelcm="lxp --cm lxtunnel"
@@ -16,7 +16,7 @@ alias lxproxy="lxp -p"
 alias lxvnc="lxp -v"
 
 # The GPG otpauth master keys can be found in ~/Dropbox/cern/private/otp_secret_keys.txt
-# The installation instructions are in the lxp-session-manager README.md
+# The installation instructions are in the lxp-tools README.md
 alias otp-jbeaucam="pass otp cern-jbeaucam"
 alias otp-jyb="pass otp cern-jyb"
 
