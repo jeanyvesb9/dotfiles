@@ -482,7 +482,7 @@ set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @resurrect-capture-pane-contents 'on'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @continuum-save-internal '1'
-{{ if ne .platform "cern" }}
+{{- if ne .platform "cern" }}
 set -g @continuum-restore 'on'
 {{- end }}
 
