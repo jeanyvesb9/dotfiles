@@ -1,4 +1,4 @@
-# CERN LXPlus (and similar nodes) zsh config file, by Jean Yves Beaucamp - 2025.
+# CERN LXPlus (and similar nodes) zsh config file, by Jean Yves Beaucamp - 2026.
 
 # Envionment setup ------------------------------------------------------------
 # TestBed machines: ----------------------------

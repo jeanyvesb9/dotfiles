@@ -1,24 +1,26 @@
-# Copyright (C) 2025 Jean Yves Beaucamp
+# Copyright (C) 2026 Jean Yves Beaucamp
 # Local zsh config
 
 # Path ----------------------------------------------------------------------------
 # Add workstation scripts
-{{- if eq .chezmoi.os "linux" -}}
+
+{{ if eq .chezmoi.os "linux" }}
 export PATH="$HOME/.local/bin/linux_ws:$PATH"
 
-{{- if .install_wacom_scripts -}}
-    export PATH="$HOME/.local/bin/wacom:$PATH"
-{{- end -}}
+{{ if .install_wacom_scripts }}
+export PATH="$HOME/.local/bin/wacom:$PATH"
+{{ end }}
 
-{{- else if eq .chezmoi.os "darwin" -}}
+{{ else if eq .chezmoi.os "darwin" }}
 export PATH="$HOME/.local/bin/macos_ws:$PATH"
-{{- end -}}
+{{ end }}
 
 
 # LaTeX ----------------------------------------------------------------------------
+
 {{ if eq .chezmoi.os "linux" }}
-    TEX_PATH='/usr/local/texlive/2026/bin/x86_64-linux'
+TEX_PATH='/usr/local/texlive/2026/bin/x86_64-linux'
 {{ else if eq .chezmoi.os "darwin" }}
-    TEX_PATH='/usr/local/texlive/2026/bin/universal-darwin'
+TEX_PATH='/usr/local/texlive/2026/bin/universal-darwin'
 {{ end }}
 export PATH="$TEX_PATH:$PATH"
