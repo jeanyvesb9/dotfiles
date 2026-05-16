@@ -17,8 +17,8 @@ export PATH="$HOME/.local/bin/macos_ws:$PATH"
 
 # LaTeX ----------------------------------------------------------------------------
 {{ if eq .chezmoi.os "linux" }}
-    TEX_PATH='/usr/local/texlive/2025/bin/x86_64-linux'
+    TEX_PATH='/usr/local/texlive/2026/bin/x86_64-linux'
 {{ else if eq .chezmoi.os "darwin" }}
-    TEX_PATH='/usr/local/texlive/2025/bin/universal-darwin'
+    TEX_PATH='/usr/local/texlive/2026/bin/universal-darwin'
 {{ end }}
 export PATH="$TEX_PATH:$PATH"
