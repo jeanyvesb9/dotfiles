@@ -31,6 +31,9 @@
 .config/kitty
 {{- end }}
 
+{{- if neq .chezmoi.hostname "JeanYves-PC" }}
+.config/Deskflow
+{{- end }}
 
 # ----------------------------------------------------
 # CERN scripts
