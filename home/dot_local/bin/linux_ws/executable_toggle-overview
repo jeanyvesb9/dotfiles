@@ -1,0 +1,4 @@
+#!/bin/sh
+# Copyright (C) 2026 Jean Yves Beaucamp
+
+qdbus org.kde.kglobalaccel /component/kwin invokeShortcut Overview
