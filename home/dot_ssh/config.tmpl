@@ -27,6 +27,21 @@ HOST lxplus8s02
 HOST lxplus8s09
     HostName lxplus8s09.cern.ch
 
+# Jump through the standard lxplus connection, since the nodes are internal to the CERN network
+# In VSCode: disable Remote.SSH.useLocalServer
+Host pc-tbed-pub-12 pc-tbed-pub-*
+    User jbeaucam
+    ProxyJump lxplus.cern.ch
+    ForwardX11 yes
+    ForwardX11Trusted no
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials yes
+    PubkeyAuthentication no
+    ForwardAgent yes
+    CheckHostIP no
+    ServerAliveInterval 100
+
 HOST lxtunnel lxtunnel.cern.ch
     Hostname lxtunnel.cern.ch
     User jbeaucam
