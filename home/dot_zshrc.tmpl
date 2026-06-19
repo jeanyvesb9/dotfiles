@@ -220,6 +220,14 @@ source $HOME/.local/share/dotfiles/iflp/iflp_setup.zsh
 
 
 
+{{ if .is_workstation }}
+# Comet ----------------------------------------------------------------------------
+export COMET_API_KEY=""
+export COMET_WORKSPACE="tautrigger"
+{{- end }}
+
+
+
 {{- if .is_workstation }}
 # Conda/Mamba ----------------------------------------------------------------------
 
