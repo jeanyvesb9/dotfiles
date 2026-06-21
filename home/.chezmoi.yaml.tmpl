@@ -10,6 +10,9 @@
 # We use the email address (and the name) to setup git
 {{- $email := promptStringOnce . "email" "Email address" "jeanyvesb9@gmail.com" }}
 
+# Chezmoi BitWarden secrets key
+{{- $bws_access_token := promptStringOnce . "bws_access_token" "BitWarden Secrets access token" }}
+
 data:
     platform: {{ $platform | quote }}
     is_workstation: {{ $is_workstation }}
@@ -19,3 +22,6 @@ data:
 
     # Placeholder. Cannot really be used yet as the current scripts have been written for X11
     install_wacom_scripts: false
+
+    bws_access_token: {{ $bws_access_token }}
+

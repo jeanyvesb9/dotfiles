@@ -220,11 +220,9 @@ source $HOME/.local/share/dotfiles/iflp/iflp_setup.zsh
 
 
 
-{{ if .is_workstation }}
 # Comet ----------------------------------------------------------------------------
-export COMET_API_KEY=""
+export COMET_API_KEY="{{- (bitwardenSecrets "5534566b-bed9-443d-ab44-b4700045fa33" .bws_access_token).value -}}"
 export COMET_WORKSPACE="tautrigger"
-{{- end }}
 
 
 
